@@ -3,9 +3,10 @@
 import streamlit as st
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 from models.orm_models import Session, RioItems
-from crud.update import RioItemsUpdater
+from crud.update import RioItemsUpdater     
 from crud.read import RioItemsRead
 
 
@@ -21,8 +22,9 @@ def main():
     result = alda.get_filtered_items()
 
 
-    data = [{'id': item.id, 
-                 'innkaupum_haett': item.innkaupum_haett, 
+    data = [{'id': item.id,  
+                 'item number': item.item_number,
+                 'description': item.description,
                  'buy_freq': item.buy_freq,
                  'del_time': item.del_time}
                  for item in result]
@@ -37,8 +39,8 @@ def main():
 
         # Display the editable grid
         gb = GridOptionsBuilder.from_dataframe(df)
-        gb.configure_default_column(editable=True)
-        gb.configure_column("id", editable=False)
+        gb.configure_default_column(editable=False)
+        gb.configure_column("buy_freq", editable=True,  cellStyle={'backgroundColor': 'lightgreen'})
         gb.configure_selection('single')
         grid_options = gb.build()
 
@@ -58,7 +60,7 @@ def main():
         if selected_rows is not None:
             
             id = int(selected_rows.iloc[0, 0])
-            buy_freq = int(selected_rows.iloc[0, 2])
+            buy_freq = int(selected_rows.iloc[0, 3])
 
             st.write(f"Selected ID: {id}, Buy Frequency: {buy_freq}")
 

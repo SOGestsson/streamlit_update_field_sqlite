@@ -13,6 +13,8 @@ Base = declarative_base()
 class RioItems(Base):
     __tablename__ = 'rio_items'
     id = Column(Integer, primary_key=True)
+    item_number = Column(String, nullable = False)
+    description = Column(String, nullable = False)
     buy_freq = Column(Integer, nullable = False)
     del_time = Column(Integer, nullable = False)
     innkaupum_haett = Column(Integer, nullable = False)
